@@ -20,10 +20,10 @@ conn = psycopg2.connect("")
 stmts = aiosql.from_path("whatlang.sql", "psycopg2")
 
 langlist = []
-for index, data in enumerate(stmts.get_doc_bodies(conn=conn)):
-    id, body = data
+for index, id in enumerate(stmts.get_ids(conn=conn)):
+    body = stmts.get_body(conn=conn, doc_id=id[0])[0][0]
     doc = nlp(body)
-    r = (id, doc._.language['language'], doc._.language['score'])
+    r = (id[0], doc._.language['language'], doc._.language['score'])
     print(index, r)
     langlist.append(r)
 
